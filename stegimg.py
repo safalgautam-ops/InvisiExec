@@ -60,12 +60,11 @@ def encode_enc(newimg, data):
         x = 0 if x == w - 1 else x + 1
         y += 1 if x == 0 else 0
 
-def encode(img_path):
+def encode(img_path,data):
     image = Image.open(img_path, 'r')
     if image.mode != 'RGB':
         print("[!] Image mode must be RGB.")
         return
-    data = input("Enter the data to be encoded: ")
 
     if not data:
         raise ValueError("Data is empty.")
