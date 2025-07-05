@@ -18,7 +18,7 @@ def modBytes(file_bytes, data):
 
 def encode_file(input_file, output_file, message):
     with open(input_file, 'rb') as f:
-        file_bytes = f.read()
+        file_bytes = f.read() 
     if len(message) * 8 + 8 > len(file_bytes):
         raise ValueError("File too small to hide the message.")
     modded_bytes = bytearray(modBytes(file_bytes, message))

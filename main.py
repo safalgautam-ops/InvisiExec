@@ -1,6 +1,6 @@
 from stegimg import encode as img_encode, decode as img_decode
 from stegfiles import encode_file as file_encode, decode_file as file_decode
-from crypto import encrypt, decrypt
+from crypto import encrypt, decrypt, check_password
 import base64
 from PIL import Image
 
@@ -25,17 +25,23 @@ def main():
             file_encode(filepath, out_file, data_to_hide)
         print("Message encrypted and hidden.")
     elif choice == '2':
-        password = input("Enter password: ")
         if is_image:
             extracted = img_decode(filepath)
         else:
             extracted = file_decode(filepath)
         packed = base64.b64decode(extracted.encode('utf-8'))
-        try:
-            msg = decrypt(packed, password)
-            print("Decrypted message:", msg)
-        except Exception as e:
-            print("Decryption failed:", e)
+        while True:
+            password = input("Enter password: ")
+            if not check_password(packed, password):
+                print("Incorrect password. Try again.")
+                continue
+            try:
+                msg = decrypt(packed, password)
+                print("Decrypted message:", msg)
+                break
+            except Exception as e:
+                print("Decryption failed:", e)
+                break
     else:
         print("Invalid choice.")
 
