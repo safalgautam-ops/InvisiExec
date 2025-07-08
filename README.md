@@ -29,7 +29,7 @@ Encapsula is a user-friendly toolkit for hiding and extracting secret messages i
 ### 1. Clone this repository
 
 ```bash
-https://github.com/safalgautam-ops/Encapsula
+git clone https://github.com/safalgautam-ops/Encapsula
 cd Encapsula
 ```
 
