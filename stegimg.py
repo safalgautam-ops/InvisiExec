@@ -60,19 +60,18 @@ def encode_enc(newimg, data):
         x = 0 if x == w - 1 else x + 1
         y += 1 if x == 0 else 0
 
-def encode(img_path,data):
+def encode(img_path, data, out_path):
     image = Image.open(img_path, 'r')
     if image.mode != 'RGB':
         print("[!] Image mode must be RGB.")
-        return
-
     if not data:
         raise ValueError("Data is empty.")
-    
+    if not out_path:
+        raise ValueError("Output image path is required.")
     newimg = image.copy()
     encode_enc(newimg, data)
-    newimg_name = input("Enter the name of new image(with extension): ")
-    newimg.save(newimg_name, newimg_name.split(".")[-1].upper())
+    newimg.save(out_path, out_path.split(".")[-1].upper())
+    return "file saved successfully."
 
 def decode(img):
     image = Image.open(img, 'r')

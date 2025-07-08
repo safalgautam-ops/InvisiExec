@@ -24,7 +24,10 @@ def encode_file(input_file, output_file, message):
     modded_bytes = bytearray(modBytes(file_bytes, message))
     with open(output_file, 'wb') as f:
         f.write(modded_bytes)
+
     print(f"Message hidden in {output_file}")
+    return "Message hidden successfully in file."
+
 
 def decode_file(stego_file):
     with open(stego_file, 'rb') as f:
@@ -39,4 +42,5 @@ def decode_file(stego_file):
     message = ''.join(chars)
     print("Extracted message:", message)
     return message
+
 
