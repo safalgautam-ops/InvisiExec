@@ -29,8 +29,8 @@ Encapsula is a user-friendly toolkit for hiding and extracting secret messages i
 ### 1. Clone this repository
 
 ```bash
-git clone https://github.com/yourusername/encapsula-stego.git
-cd encapsula-stego
+https://github.com/safalgautam-ops/Encapsula
+cd Encapsula
 ```
 
 ### 2. Install requirements
